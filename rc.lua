@@ -372,10 +372,10 @@ for s = 1, screen.count() do
     -- Widgets that are aligned to the right
     local right_layout = wibox.layout.fixed.horizontal()
     if s == 1 then right_layout:add(wibox.widget.systray()) end
-    right_layout:add(uptimewidget.text)
-    right_layout:add(separator)
-    right_layout:add(cpuwidget.text)
-    right_layout:add(separator)
+    --right_layout:add(uptimewidget.text)
+    --right_layout:add(separator)
+    --right_layout:add(cpuwidget.text)
+    --right_layout:add(separator)
     right_layout:add(alsawidget.text)
     right_layout:add(separator)
     right_layout:add(battwidget.text)
@@ -406,7 +406,7 @@ root.buttons(awful.util.table.join(
 globalkeys = awful.util.table.join(
     awful.key({ modkey,           }, "Left",   awful.tag.viewprev       ),
     awful.key({ modkey,           }, "Right",  awful.tag.viewnext       ),
-    awful.key({ modkey,           }, "Escape", awful.tag.history.restore),
+    --awful.key({ modkey,           }, "Escape", awful.tag.history.restore),
 
     awful.key({ modkey,           }, "j",
         function ()
@@ -418,7 +418,6 @@ globalkeys = awful.util.table.join(
             awful.client.focus.byidx(-1)
             if client.focus then client.focus:raise() end
         end),
-    --awful.key({ modkey,           }, "w", function () mymainmenu:show() end),
 
     -- Layout manipulation
     awful.key({ modkey, "Shift"   }, "j", function () awful.client.swap.byidx(  1)    end),
@@ -483,6 +482,9 @@ globalkeys = awful.util.table.join(globalkeys, awful.key({ }, "Print", function(
     awful.util.spawn("scrot /home/irishninja/Pictures/screenshots/%Y-%m-%d-%T-screenshot.png")
     naughty.notify({ preset = naughty.config.presets.low,
                      text = "Saving screenshot... "})
+end))
+globalkeys = awful.util.table.join(globalkeys, awful.key({ modkey }, "Escape", function()--"#76", function()
+    awful.util.spawn("slimlock")
 end))
 
 clientkeys = awful.util.table.join(
