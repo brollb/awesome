@@ -484,6 +484,9 @@ globalkeys = awful.util.table.join(globalkeys, awful.key({ }, "Print", function(
     naughty.notify({ preset = naughty.config.presets.low,
                      text = "Saving screenshot... "})
 end))
+globalkeys = awful.util.table.join(globalkeys, awful.key({ }, "Menu", function()--"#76", function()
+    awful.util.spawn("chromium")
+end))
 globalkeys = awful.util.table.join(globalkeys, awful.key({ modkey }, "Escape", function()--"#76", function()
     awful.util.spawn("slimlock")
 end))
