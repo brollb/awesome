@@ -7,3 +7,4 @@ This repository contains the widgets that I use with awesome. These include
 + Update widget (Arch)
 + Battery widget
 + Uptime widget
++ CPU monitor (w/ infinite loop warning on high cpu...)
