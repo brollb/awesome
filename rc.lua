@@ -10,11 +10,14 @@ local beautiful = require("beautiful")
 -- Notification library
 local naughty = require("naughty")
 local menubar = require("menubar")
-local cpuwidget = require("cpuwidget")
-local uptimewidget = require("uptimewidget")
 
 -- Extra Library for Widgets
 local vicious = require("vicious")
+
+-- Loading widgets
+local updatewidget = require("updatewidget")
+local cpuwidget = require("cpuwidget")
+local uptimewidget = require("uptimewidget")
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
@@ -101,9 +104,9 @@ myinternetmenu = {
    { "Vandy Wifi", terminal .. "-e sudo systemctl stop netctl-auto@wlp2s0.service & sudo /home/irishninja/Programming/scripts/vandy-wifi.sh"}
 }
 
-mymainmenu = awful.menu({ items = { { "Internet", myinternetmenu, beautiful.awesome_icon },
-                                    { "open terminal", terminal },
-				    { "shutdown", "shutdown -h now" }--awful.util.spawn("shutdown -h now")}
+mymainmenu = awful.menu({ items = { { "open terminal", terminal },
+				    				{ "shutdown", "shutdown -h now" },
+				    				{ "restart", "shutdown -r now" }
                                   }
                         })
 
@@ -373,8 +376,6 @@ for s = 1, screen.count() do
     local right_layout = wibox.layout.fixed.horizontal()
     if s == 1 then right_layout:add(wibox.widget.systray()) end
     --right_layout:add(uptimewidget.text)
-    --right_layout:add(separator)
-    --right_layout:add(cpuwidget.text)
     --right_layout:add(separator)
     right_layout:add(alsawidget.text)
     right_layout:add(separator)
