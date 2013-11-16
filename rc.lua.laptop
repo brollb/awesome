@@ -14,12 +14,6 @@ local menubar = require("menubar")
 -- Extra Library for Widgets
 local vicious = require("vicious")
 
--- Loading widgets
-local updatewidget = require("updatewidget")
-local cpuwidget = require("cpuwidget")
-local uptimewidget = require("uptimewidget")
-local gmailwidget = require("gmailwidget")
-
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
 -- another config (This code will only ever execute for the fallback config)
@@ -164,17 +158,6 @@ local alsawidget =
 	mixer = terminal .. " -e alsamixer", -- or whatever your preferred sound mixer is
 	notifications =
 	{
-		icons =
-		{
-			-- the first item is the 'muted' icon
-			"/home/irishninja/.config/awesome/icons/volume_mute.jpg",
-			"/home/irishninja/.config/awesome/icons/volume0.gif",
-			"/home/irishninja/.config/awesome/icons/volume1.gif",
-			"/home/irishninja/.config/awesome/icons/volume2.jpg",
-			"/home/irishninja/.config/awesome/icons/volume3.jpg",
-			"/home/irishninja/.config/awesome/icons/volume4.gif",
-			"/home/irishninja/.config/awesome/icons/volume5.jpg"
-		},
 		font = "Monospace 11", -- must be a monospace font for the bar to be sized consistently
 		icon_size = 48,
 		bar_size = 20
@@ -214,25 +197,6 @@ function alsawidget:notify ()
 		width = 300,
 		font = alsawidget.notifications.font
 	}
-	local i = 1;
-	while alsawidget.notifications.icons[i + 1] ~= nil
-	do
-		i = i + 1
-	end
-	if i >= 2
-	then
-		preset.icon_size = alsawidget.notifications.icon_size
-		if alsawidget._muted or alsawidget._current_level == 0
-		then
-			preset.icon = alsawidget.notifications.icons[1]
-		elseif alsawidget._current_level == 100
-		then
-			preset.icon = alsawidget.notifications.icons[i]
-		else
-			local int = math.modf (alsawidget._current_level / 100 * (i - 1))
-			preset.icon = alsawidget.notifications.icons[int + 2]
-		end
-	end
 	if alsawidget._muted
 	then
 		preset.title = alsawidget.channel .. " - Muted"
