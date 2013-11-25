@@ -92,13 +92,6 @@ end
 
 -- {{{ Menu
 -- Create a laucher widget and a main menu
-myinternetmenu = {
-   { "auto-connect", terminal .. " sudo systemctl start netctl-auto@wlp2s0.service" },
-   { "manual connect", terminal .. " sudo 'systemctl stop netctl-auto@wlp2s0.service & xterm wifi-menu' "},
-   { "ethernet", terminal .. " -e sudo systemctl stop netctl-auto@wlp2s0.service & sudo systemctl start dhcpcd@enp3s0f2.service" },
-   { "Vandy Wifi", terminal .. "-e sudo systemctl stop netctl-auto@wlp2s0.service & sudo /home/irishninja/Programming/scripts/vandy-wifi.sh"}
-}
-
 mymainmenu = awful.menu({ items = { { "open terminal", terminal },
 				    				{ "shutdown", "shutdown -h now" },
 				    				{ "restart", "shutdown -r now" }
@@ -193,8 +186,6 @@ alsawidget._muted = false
 function alsawidget:notify ()
 	local preset =
 	{
-		height = 75,
-		width = 300,
 		font = alsawidget.notifications.font
 	}
 	if alsawidget._muted
@@ -239,23 +230,6 @@ vicious.register (alsawidget.text, vicious.widgets.volume, function (widget, arg
 	end
 	return '<span color=' .. color .. '>' .. args[2] .. " " .. args[1] .. "%" .. '</span>'
 end, 7, alsawidget.channel) -- relatively high update time, use of keys/mouse will force update
-
--- Wifi Widget
-local wifiwidget = 
-{
-	icon = wibox.widget.imagebox()
-}
-wifiwidget.tooltip = awful.tooltip ({ objects = { wifiwidget.icon } })
-vicious.register (wifiwidget, vicious.widgets.wifi, function (widget, args)
-	local name = "Not Connected"
-	wifiwidget.icon:set_image("/home/irishninja/.config/awesome/icons/wifi_bad.png");
-	if args["{ssid}"] ~= "N/A"
-	then
-	wifiwidget.icon:set_image("/home/irishninja/.config/awesome/icons/wifi_good.png");
-	name = args["{ssid}"]
-	end
-	wifiwidget.tooltip:set_text (" " .. name .. " " )
-end, 11, "wlp2s0")
 
 -- Separator Widget
 separator = wibox.widget.textbox()
@@ -340,13 +314,10 @@ for s = 1, screen.count() do
     -- Widgets that are aligned to the right
     local right_layout = wibox.layout.fixed.horizontal()
     if s == 1 then right_layout:add(wibox.widget.systray()) end
-    right_layout:add(gmailwidget.text)
-    --right_layout:add(gpgwidget.text)
     right_layout:add(alsawidget.text)
     right_layout:add(separator)
     right_layout:add(battwidget.text)
     right_layout:add(separator)
-    right_layout:add(wifiwidget.icon)
     right_layout:add(mytextclock)
     right_layout:add(mylayoutbox[s])
 
@@ -618,3 +589,4 @@ end)
 client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 -- }}}
+
