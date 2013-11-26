@@ -215,8 +215,8 @@ end, 7, alsawidget.channel) -- relatively high update time, use of keys/mouse wi
 -- Create Network Traffic Widget
 local netwidget = wibox.widget.textbox();
 vicious.register (netwidget, vicious.widgets.net, function (widget, args)
-    local color = "'#2255cc'"
-    local eth = 'enp3s0f2'
+    local color = "'#2288cc'"
+    local eth = 'eno1'
     local wifi = 'wlp2s0'
     local txt = nil
 	if tonumber(args['{' .. eth .. ' tx_b}']) < 1000 then 
