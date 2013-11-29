@@ -8,10 +8,14 @@ vicious.register(pacwidget, vicious.widgets.pkg,
                 function(widget,args)
                     local io = { popen = io.popen }
                     local s = io.popen("pacman -Qu")
-                    local str = ''
+                    local str = nil
 
                     for line in s:lines() do
-                        str = str .. line .. "\n"
+                    if str == nil then
+                        str = line
+                    else
+                        str = str .. '\n' .. line
+                    end
                     end
                     pacwidget_t:set_text(str)
                     s:close()
