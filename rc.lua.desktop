@@ -355,28 +355,7 @@ root.buttons(awful.util.table.join(
 globalkeys = awful.util.table.join(
     awful.key({ modkey,           }, "Left",   awful.tag.viewprev       ),
     awful.key({ modkey,           }, "Right",  awful.tag.viewnext       ),
-    awful.key({ modkey,           }, "Escape", function() awful.util.spawn("slimlock") end),
-    awful.key({ }, "Menu", function() awful.util.spawn(terminal .. " -e ranger") end),
-    awful.key({ }, "Print", function()--"#76", function()
-        local dir = os.getenv("HOME") .. "/Pictures/screenshots/"
-        if awful.util.file_readable( dir ) == false then
-            awful.util.mkdir( dir );
-        end
-    
-        function takeScreenshot(newFile)
-            awful.util.spawn("imlib2_grab " .. dir .. newFile .. ".png");
-            naughty.notify({ preset = naughty.config.presets.low,
-                        text = "Saving screenshot as " .. newFile .. ".png"})
-                        --text = "imlib2_grab " .. dir .. newFile .. ".png"})
-        end
-    
-        awful.prompt.run({ prompt = "Save screenshot as: " },
-            mypromptbox[mouse.screen].widget,
-            takeScreenshot, nil,
-            nil)
-
-    end),
-
+   
     awful.key({ modkey,           }, "j",
         function ()
             awful.client.focus.byidx( 1)
@@ -450,7 +429,41 @@ clientkeys = awful.util.table.join(
         function (c)
             c.maximized_horizontal = not c.maximized_horizontal
             c.maximized_vertical   = not c.maximized_vertical
-        end)
+        end),
+
+--Custom key bindings
+    awful.key({ modkey,           }, "Escape", function() awful.util.spawn("slimlock") end),
+    awful.key({ }, "Menu", function() awful.util.spawn(terminal .. " -e ranger") end),
+    awful.key({ }, "Print", function()--"#76", function()
+        local dir = os.getenv("HOME") .. "/Pictures/screenshots/"
+        if awful.util.file_readable( dir ) == false then
+            awful.util.mkdir( dir );
+        end
+    
+        function takeScreenshot(newFile)
+            awful.util.spawn("imlib2_grab " .. dir .. newFile .. ".png");
+            naughty.notify({ preset = naughty.config.presets.low,
+                        text = "Saving screenshot as " .. newFile .. ".png"})
+                        --text = "imlib2_grab " .. dir .. newFile .. ".png"})
+        end
+    
+        awful.prompt.run({ prompt = "Save screenshot as: " },
+            mypromptbox[mouse.screen].widget,
+            takeScreenshot, nil,
+            nil)
+
+    end),
+    awful.key({modkey, }, "Prior", function()
+	    awful.util.spawn("amixer set " .. alsawidget.channel .. " " .. alsawidget.step .. "+")
+	    vicious.force({ alsawidget.text })
+	    alsawidget.notify()
+    end),
+    awful.key({modkey, }, "Next", function()
+        awful.util.spawn("amixer set " .. alsawidget.channel .. " " .. alsawidget.step .. "-")
+        vicious.force({ alsawidget.text })
+        alsawidget.notify()
+    end)
+ 
 )
 
 -- Bind all key numbers to tags.
