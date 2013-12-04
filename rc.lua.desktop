@@ -51,6 +51,7 @@ local cpuwidget = require("cpuwidget")
 terminal = "xterm"
 editor = os.getenv("EDITOR") or "vim"
 editor_cmd = terminal .. " -e " .. editor
+homeDir = "/home/USERNAME/"
 
 -- Default modkey.
 -- Usually, Mod4 is the key with a logo between Control and Alt.
@@ -363,6 +364,26 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey,           }, "Right",  awful.tag.viewnext       ),
     awful.key({ modkey,           }, "Escape", function() awful.util.spawn("slimlock") end),
     awful.key({ }, "Menu", function() awful.util.spawn(terminal .. "-e ranger") end),
+    awful.key({ }, "Print", function()--"#76", function()
+        local dir = homeDir .. "Pictures/screenshots/"
+        if awful.util.file_readable( dir ) == false then
+            awful.util.mkdir( dir );
+        end
+    
+        function takeScreenshot(newFile)
+            awful.util.spawn("imlib2_grab " .. dir .. newFile .. ".png");
+            naughty.notify({ preset = naughty.config.presets.low,
+                        text = "Saving screenshot as " .. newFile .. ".png"})
+                        --text = "imlib2_grab " .. dir .. newFile .. ".png"})
+        end
+    
+        awful.prompt.run({ prompt = "Save screenshot as: " },
+            mypromptbox[mouse.screen].widget,
+            takeScreenshot, nil,
+            nil)
+
+    end),
+
 
     awful.key({ modkey,           }, "j",
         function ()
