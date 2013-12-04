@@ -51,7 +51,6 @@ local cpuwidget = require("cpuwidget")
 terminal = "xterm"
 editor = os.getenv("EDITOR") or "vim"
 editor_cmd = terminal .. " -e " .. editor
-homeDir = "/home/USERNAME/"
 
 -- Default modkey.
 -- Usually, Mod4 is the key with a logo between Control and Alt.
@@ -357,9 +356,9 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey,           }, "Left",   awful.tag.viewprev       ),
     awful.key({ modkey,           }, "Right",  awful.tag.viewnext       ),
     awful.key({ modkey,           }, "Escape", function() awful.util.spawn("slimlock") end),
-    awful.key({ }, "Menu", function() awful.util.spawn(terminal .. "-e ranger") end),
+    awful.key({ }, "Menu", function() awful.util.spawn(terminal .. " -e ranger") end),
     awful.key({ }, "Print", function()--"#76", function()
-        local dir = homeDir .. "Pictures/screenshots/"
+        local dir = os.getenv("HOME") .. "/Pictures/screenshots/"
         if awful.util.file_readable( dir ) == false then
             awful.util.mkdir( dir );
         end
