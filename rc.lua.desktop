@@ -44,14 +44,13 @@ beautiful.init("/usr/share/awesome/themes/zenburn/theme.lua")
 -- Custom widgets
 local uptimewidget = require("uptimewidget")
 local updatewidget = require("updatewidget")
-local gmailwidget = require("gmailwidget")
+--local gmailwidget = require("gmailwidget")
 local cpuwidget = require("cpuwidget")
 
 -- This is used later as the default terminal and editor to run.
 terminal = "xterm"
 editor = os.getenv("EDITOR") or "vim"
 editor_cmd = terminal .. " -e " .. editor
-homeDir = "/home/USERNAME/"
 
 -- Default modkey.
 -- Usually, Mod4 is the key with a logo between Control and Alt.
@@ -97,15 +96,9 @@ end
 
 -- {{{ Menu
 -- Create a laucher widget and a main menu
-myawesomemenu = {
-   { "manual", terminal .. " -e man awesome" },
-   { "edit config", editor_cmd .. " " .. awesome.conffile },
-   { "restart", awesome.restart },
-   { "quit", awesome.quit }
-}
-
-mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesome_icon },
-                                    { "open terminal", terminal }
+mymainmenu = awful.menu({ items = { { "open terminal", terminal },
+				    				{ "shutdown", "shutdown -h now" },
+				    				{ "restart", "shutdown -r now" }
                                   }
                         })
 
@@ -335,7 +328,7 @@ for s = 1, screen.count() do
         right_layout:add(separator) 
         right_layout:add(uptimewidget.text) 
     else
-        right_layout:add(gmailwidget.text) 
+        --right_layout:add(gmailwidget.text) 
         right_layout:add(mytextclock)
     end
     right_layout:add(mylayoutbox[s])
@@ -362,29 +355,7 @@ root.buttons(awful.util.table.join(
 globalkeys = awful.util.table.join(
     awful.key({ modkey,           }, "Left",   awful.tag.viewprev       ),
     awful.key({ modkey,           }, "Right",  awful.tag.viewnext       ),
-    awful.key({ modkey,           }, "Escape", function() awful.util.spawn("slimlock") end),
-    awful.key({ }, "Menu", function() awful.util.spawn(terminal .. "-e ranger") end),
-    awful.key({ }, "Print", function()--"#76", function()
-        local dir = homeDir .. "Pictures/screenshots/"
-        if awful.util.file_readable( dir ) == false then
-            awful.util.mkdir( dir );
-        end
-    
-        function takeScreenshot(newFile)
-            awful.util.spawn("imlib2_grab " .. dir .. newFile .. ".png");
-            naughty.notify({ preset = naughty.config.presets.low,
-                        text = "Saving screenshot as " .. newFile .. ".png"})
-                        --text = "imlib2_grab " .. dir .. newFile .. ".png"})
-        end
-    
-        awful.prompt.run({ prompt = "Save screenshot as: " },
-            mypromptbox[mouse.screen].widget,
-            takeScreenshot, nil,
-            nil)
-
-    end),
-
-
+   
     awful.key({ modkey,           }, "j",
         function ()
             awful.client.focus.byidx( 1)
@@ -458,7 +429,41 @@ clientkeys = awful.util.table.join(
         function (c)
             c.maximized_horizontal = not c.maximized_horizontal
             c.maximized_vertical   = not c.maximized_vertical
-        end)
+        end),
+
+--Custom key bindings
+    awful.key({ modkey,           }, "Escape", function() awful.util.spawn("slimlock") end),
+    awful.key({ }, "Menu", function() awful.util.spawn(terminal .. " -e ranger") end),
+    awful.key({ }, "Print", function()--"#76", function()
+        local dir = os.getenv("HOME") .. "/Pictures/screenshots/"
+        if awful.util.file_readable( dir ) == false then
+            awful.util.mkdir( dir );
+        end
+    
+        function takeScreenshot(newFile)
+            awful.util.spawn("imlib2_grab " .. dir .. newFile .. ".png");
+            naughty.notify({ preset = naughty.config.presets.low,
+                        text = "Saving screenshot as " .. newFile .. ".png"})
+                        --text = "imlib2_grab " .. dir .. newFile .. ".png"})
+        end
+    
+        awful.prompt.run({ prompt = "Save screenshot as: " },
+            mypromptbox[mouse.screen].widget,
+            takeScreenshot, nil,
+            nil)
+
+    end),
+    awful.key({modkey, }, "Prior", function()
+	    awful.util.spawn("amixer set " .. alsawidget.channel .. " " .. alsawidget.step .. "+")
+	    vicious.force({ alsawidget.text })
+	    alsawidget.notify()
+    end),
+    awful.key({modkey, }, "Next", function()
+        awful.util.spawn("amixer set " .. alsawidget.channel .. " " .. alsawidget.step .. "-")
+        vicious.force({ alsawidget.text })
+        alsawidget.notify()
+    end)
+ 
 )
 
 -- Bind all key numbers to tags.
