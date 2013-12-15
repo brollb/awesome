@@ -231,9 +231,9 @@ vicious.register (alsawidget.text, vicious.widgets.volume, function (widget, arg
 	return '<span color=' .. color .. '>' .. args[2] .. " " .. args[1] .. "%" .. '</span>'
 end, 7, alsawidget.channel) -- relatively high update time, use of keys/mouse will force update
 
--- Separator Widget
-separator = wibox.widget.textbox()
-separator:set_text (" :: ")
+-- Separator and Spacing Widgets
+separator = wibox.widget.textbox(" :: ")
+space = wibox.widget.textbox(" ")
 
 -- Create a textclock widget
 mytextclock = awful.widget.textclock() 
@@ -314,6 +314,7 @@ for s = 1, screen.count() do
     -- Widgets that are aligned to the right
     local right_layout = wibox.layout.fixed.horizontal()
     if s == 1 then right_layout:add(wibox.widget.systray()) end
+    right_layout:add(space)
     right_layout:add(alsawidget.text)
     right_layout:add(separator)
     right_layout:add(battwidget.text)
@@ -416,12 +417,28 @@ globalkeys = awful.util.table.join(globalkeys, awful.key({ }, "XF86AudioMute", f
     alsawidget.notify()
 end))
 globalkeys = awful.util.table.join(globalkeys, awful.key({ }, "XF86Display", function()
-    awful.util.spawn("xrandr --output HDMI1 --auto")
+    awful.util.spawn("xrandr --output VGA1 --auto --right-of LVDS1")
+    awful.util.spawn("xrandr --output HDMI1 --auto --right-of LVDS1")
 end))
 globalkeys = awful.util.table.join(globalkeys, awful.key({ }, "Print", function()--"#76", function()
-    awful.util.spawn("scrot /home/irishninja/Pictures/screenshots/%Y-%m-%d-%T-screenshot.png")
-    naughty.notify({ preset = naughty.config.presets.low,
-                     text = "Saving screenshot... "})
+    --awful.util.spawn("scrot $HOME/Pictures/screenshots/%Y-%m-%d-%T-screenshot.png")
+    local dir = os.getenv("HOME") .. "/Pictures/screenshots/"
+    if awful.util.file_readable( dir ) == false then
+        awful.util.mkdir( dir );
+    end
+
+    function takeScreenshot(newFile)
+        awful.util.spawn("imlib2_grab " .. dir .. newFile .. ".png");
+        naughty.notify({ preset = naughty.config.presets.low,
+                    text = "Saving screenshot as " .. newFile .. ".png"})
+                    --text = "imlib2_grab " .. dir .. newFile .. ".png"})
+    end
+
+    awful.prompt.run({ prompt = "Save screenshot as: " },
+        mypromptbox[mouse.screen].widget,
+        takeScreenshot, nil,
+        nil)
+
 end))
 globalkeys = awful.util.table.join(globalkeys, awful.key({ }, "Menu", function()--"#76", function()
     awful.util.spawn(terminal .. " -e ranger")
