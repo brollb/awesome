@@ -1,4 +1,4 @@
-awesome
+awesome (version 3.5)
 =========
 
 ##Description
