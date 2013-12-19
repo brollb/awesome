@@ -44,7 +44,7 @@ beautiful.init("/usr/share/awesome/themes/zenburn/theme.lua")
 -- Custom widgets
 local uptimewidget = require("uptimewidget")
 local updatewidget = require("updatewidget")
---local gmailwidget = require("gmailwidget")
+local gmailwidget = require("gmailwidget")
 local cpuwidget = require("cpuwidget")
 
 -- This is used later as the default terminal and editor to run.
@@ -328,7 +328,7 @@ for s = 1, screen.count() do
         right_layout:add(separator) 
         right_layout:add(uptimewidget.text) 
     else
-        --right_layout:add(gmailwidget.text) 
+        right_layout:add(gmailwidget.text) 
         right_layout:add(mytextclock)
     end
     right_layout:add(mylayoutbox[s])
@@ -441,7 +441,7 @@ clientkeys = awful.util.table.join(
         end
     
         function takeScreenshot(newFile)
-            awful.util.spawn("imlib2_grab " .. dir .. newFile .. ".png");
+            awful.util.spawn("imlib2_grab \"" .. dir .. newFile .. ".png\"");
             naughty.notify({ preset = naughty.config.presets.low,
                         text = "Saving screenshot as " .. newFile .. ".png"})
                         --text = "imlib2_grab " .. dir .. newFile .. ".png"})
