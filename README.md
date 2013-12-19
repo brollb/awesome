@@ -1,10 +1,30 @@
-awesome
+awesome (version 3.5)
 =========
 
-This repository contains the widgets that I use with awesome. These include
+##Description
+This contains two different types of configuration files that I use with awesome: one with a laptop and one with a desktop.
+
+###Laptop
+The laptop configuration is pretty minimalistic; essentially only adds the necessities for laptop usage (it assumes  you are using a program like *wicd-client* or *nm-applet* to handle networking and do not need an awesome specific widget. The laptop configuration includes a modified menubar (with shutdown and restart options), an audio widget and a power widget.
+
+###Desktop
+The desktop configuration is made with dual monitors in mind. The first monitor contains the following widgets:
 + Audio widget
-+ Gmail widget (only present with new emails)
 + Update widget (Arch)
-+ Battery widget
 + Uptime widget
-+ CPU monitor (w/ infinite loop warning on high cpu...)
++ Network widget
++ Memory widget
++ CPU widget
+
+The second monitor contains:
++ Clock
++ Gmail widget (only present with new emails)
+
+##Installation
+
+    cd ~/.config
+    git clone https://github.com/brollb/awesome.git
+    cd awesome
+    ln -s rc.lua.desktop rc.lua
+
+This will set the desktop configuration file as your current configuration. For the laptop configuration, replace *rc.lua.desktop* with *rc.lua.laptop* in the above code.
