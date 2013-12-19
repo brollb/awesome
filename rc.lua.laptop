@@ -428,7 +428,7 @@ globalkeys = awful.util.table.join(globalkeys, awful.key({ }, "Print", function(
     end
 
     function takeScreenshot(newFile)
-        awful.util.spawn("imlib2_grab " .. dir .. newFile .. ".png");
+        awful.util.spawn("imlib2_grab \"" .. dir .. newFile .. ".png\"");
         naughty.notify({ preset = naughty.config.presets.low,
                     text = "Saving screenshot as " .. newFile .. ".png"})
                     --text = "imlib2_grab " .. dir .. newFile .. ".png"})
