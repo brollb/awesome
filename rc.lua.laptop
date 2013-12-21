@@ -398,54 +398,54 @@ globalkeys = awful.util.table.join(
               end),
 
     -- Menubar
-    awful.key({ modkey }, "p", function() menubar.show() end)
+    awful.key({ modkey }, "p", function() menubar.show() end),
+
+    --Custom key bindings
+    awful.key({ }, "XF86AudioRaiseVolume", function()
+        awful.util.spawn("amixer set " .. alsawidget.channel .. " " .. alsawidget.step .. "+")
+        vicious.force({ alsawidget.text })
+        alsawidget.notify()
+    end),
+    awful.key({ }, "XF86AudioLowerVolume", function()
+        awful.util.spawn("amixer set " .. alsawidget.channel .. " " .. alsawidget.step .. "-")
+        vicious.force({ alsawidget.text })
+        alsawidget.notify()
+    end),
+    awful.key({ }, "XF86AudioMute", function()
+        awful.util.spawn("amixer set " .. alsawidget.channel .. " toggle")
+        vicious.force({ alsawidget.text })
+        alsawidget.notify()
+    end),
+    awful.key({ }, "XF86Display", function()
+        awful.util.spawn("xrandr --output VGA1 --auto --right-of LVDS1")
+        awful.util.spawn("xrandr --output HDMI1 --auto --right-of LVDS1")
+    end),
+    awful.key({ }, "Print", function()
+        local dir = os.getenv("HOME") .. "/Pictures/screenshots/"
+        if awful.util.file_readable( dir ) == false then
+            awful.util.mkdir( dir );
+        end
+
+        function takeScreenshot(newFile)
+            awful.util.spawn("imlib2_grab \"" .. dir .. newFile .. ".png\"");
+            naughty.notify({ preset = naughty.config.presets.low,
+                        text = "Saving screenshot as " .. newFile .. ".png"})
+        end
+
+        awful.prompt.run({ prompt = "Save screenshot as: " },
+            mypromptbox[mouse.screen].widget,
+            takeScreenshot, nil,
+            nil)
+
+    end),
+    awful.key({ }, "Menu", function()
+        awful.util.spawn(terminal .. " -e ranger")
+    end),
+    awful.key({ modkey }, "Escape", function()
+        awful.util.spawn("slimlock")
+    end)
 )
 
-globalkeys = awful.util.table.join(globalkeys, awful.key({ }, "XF86AudioRaiseVolume", function()
-	awful.util.spawn("amixer set " .. alsawidget.channel .. " " .. alsawidget.step .. "+")
-	vicious.force({ alsawidget.text })
-	alsawidget.notify()
-end))
-globalkeys = awful.util.table.join(globalkeys, awful.key({ }, "XF86AudioLowerVolume", function()
-    awful.util.spawn("amixer set " .. alsawidget.channel .. " " .. alsawidget.step .. "-")
-    vicious.force({ alsawidget.text })
-    alsawidget.notify()
-end))
-globalkeys = awful.util.table.join(globalkeys, awful.key({ }, "XF86AudioMute", function()
-    awful.util.spawn("amixer set " .. alsawidget.channel .. " toggle")
-    vicious.force({ alsawidget.text })
-    alsawidget.notify()
-end))
-globalkeys = awful.util.table.join(globalkeys, awful.key({ }, "XF86Display", function()
-    awful.util.spawn("xrandr --output VGA1 --auto --right-of LVDS1")
-    awful.util.spawn("xrandr --output HDMI1 --auto --right-of LVDS1")
-end))
-globalkeys = awful.util.table.join(globalkeys, awful.key({ }, "Print", function()--"#76", function()
-    --awful.util.spawn("scrot $HOME/Pictures/screenshots/%Y-%m-%d-%T-screenshot.png")
-    local dir = os.getenv("HOME") .. "/Pictures/screenshots/"
-    if awful.util.file_readable( dir ) == false then
-        awful.util.mkdir( dir );
-    end
-
-    function takeScreenshot(newFile)
-        awful.util.spawn("imlib2_grab \"" .. dir .. newFile .. ".png\"");
-        naughty.notify({ preset = naughty.config.presets.low,
-                    text = "Saving screenshot as " .. newFile .. ".png"})
-                    --text = "imlib2_grab " .. dir .. newFile .. ".png"})
-    end
-
-    awful.prompt.run({ prompt = "Save screenshot as: " },
-        mypromptbox[mouse.screen].widget,
-        takeScreenshot, nil,
-        nil)
-
-end))
-globalkeys = awful.util.table.join(globalkeys, awful.key({ }, "Menu", function()--"#76", function()
-    awful.util.spawn(terminal .. " -e ranger")
-end))
-globalkeys = awful.util.table.join(globalkeys, awful.key({ modkey }, "Escape", function()--"#76", function()
-    awful.util.spawn("slimlock")
-end))
 
 clientkeys = awful.util.table.join(
     awful.key({ modkey,           }, "f",      function (c) c.fullscreen = not c.fullscreen  end),
