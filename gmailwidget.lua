@@ -26,19 +26,35 @@ print("password is '" .. password .. "'")
 	
 local gmailwidget = 
 {
-	text = wibox.widget.textbox("")
+	text = wibox.widget.textbox(""),
+    unread = 0
 }
 gmailwidget.tooltip = awful.tooltip ({ objects = { gmailwidget.text } }) --To display each core info
+
+function gmailwidget._notify(sender) 
+	naughty.notify (
+	{
+		preset = naughty.config.presets.normal,
+		text = "Email received from " .. sender .. "!"
+	})
+end
 
 vicious.register (gmailwidget.text, vicious.widgets.gmail, function (widget, args)
 	local text = ""
 	local color = "'#970011'"
 
 	if args["{count}"] ~= 0 then
-		gmailwidget._notify(args["{sender}"])
+        local msg = args["{sender}"];
+        if args["{sender}"] == nil then
+            msg = 'nil'
+        end
+		--gmailwidget._notify(args["{sender}"])
+        if gmailwidget.unread < args["{count}"] then
+            gmailwidget._notify(msg)
+        end
 
 		--Setting the tool tip text
-		local txt = "Subject: " .. args["{subject}"]
+		local txt = "Last Message Info\nSender: " .. args["{sender}"] .. "\nSubject: " .. args["{subject}"]
 		gmailwidget.tooltip:set_text(txt)
 		if args["{count}"] > 1 then
 			text = "<span color = " .. color .. "> " .. args["{count}"] .. " Unread Emails " .. "</span>:: "
@@ -47,16 +63,9 @@ vicious.register (gmailwidget.text, vicious.widgets.gmail, function (widget, arg
 		end
 	end
 
+    gmailwidget.unread = args["{count}"]
+
 	return text
 end, 13)
-
---Creating the infinite loop notication
-function gmailwidget._notify(sender) 
-	naughty.notify (
-	{
-		preset = naughty.config.presets.normal,
-		text = "Email received from " .. sender .. "!"
-	})
-end
 
 return gmailwidget
