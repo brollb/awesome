@@ -28,3 +28,5 @@ The second monitor contains:
     ln -s rc.lua.desktop rc.lua
 
 This will set the desktop configuration file as your current configuration. For the laptop configuration, replace *rc.lua.desktop* with *rc.lua.laptop* in the above code.
+
+Note: If you are using the desktop version, you will need to set the name of the network interface that you want the network widget to monitor (line 213 or so).
