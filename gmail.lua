@@ -20,6 +20,7 @@ local string = {
 -- vicious.widgets.gmail
 local gmail = {}
 
+
 -- {{{ Variable definitions
 local rss = {
   inbox   = {
@@ -30,24 +31,37 @@ local rss = {
     "https://mail.google.com/mail/feed/atom/unread",
     "Gmail %- Label"
   },
-  labelname = {
-    "https://mail.google.com/mail/feed/atom/labelname",
-    "Gmail %- Label"
-  },
+  --labelname = {
+  --  "https://mail.google.com/mail/feed/atom/labelname",
+  --  "Gmail %- Label"
+  --},
 }
 
 -- Default is just Inbox
-local feed = rss.labelname
+local feed = rss.inbox
 local mail = {
     ["{count}"]   = 0,
-    ["{sender}"]   = "N/A",
-    ["{subject}"] = "N/A"
+    ["{subject}"] = "N/A",
+    ["{sender}"] = "N/A"
 }
+-- }}}
+
+-- {{{ Helper Function for Handling long strings
+local function adjustLongString(string, warg)
+    -- Check if we should scroll, or maybe truncate
+    if warg then
+        if type(warg) == "table" then
+            string = helpers.scroll(string, warg[1], warg[2])
+        else
+            string = helpers.truncate(string, warg)
+        end
+    end
+return string
+end
 -- }}}
 
 
 -- {{{ Gmail widget type
-local section = nil
 local function worker(format, warg)
     -- Get info from the Gmail atom feed
     local f = io.popen("curl --connect-timeout 1 -m 3 -fsn " .. feed[1])
@@ -57,37 +71,21 @@ local function worker(format, warg)
         mail["{count}"] = -- Count comes before messages and matches at least 0
           tonumber(string.match(line, "<fullcount>([%d]+)</fullcount>")) or mail["{count}"]
 
-	-- Check if in author section
-	if string.find(line, "<author>") ~= nil then
-            section = "author"
-	end
-	if string.find(line, "</author>") ~= nil then
-            section = nil
-	end
-
-	-- If in author section, set the name of the sender
-	if section == "author" then
-            mail["{sender}"] = string.match(line, "<name>(.*)</name>") or mail["{sender}"]
-	end
-        -- Find subject tags
+        -- Find subject and sender tags
         local title = string.match(line, "<title>(.*)</title>")
-        -- If the subject changed then break out of the loop
-        if title ~= nil and not string.find(title, feed[2]) then
-            -- Check if we should scroll, or maybe truncate
-            if warg then
-                if type(warg) == "table" then
-                    title = helpers.scroll(title, warg[1], warg[2])
-                else
-                    title = helpers.truncate(title, warg)
-                end
-            end
+        local sender = string.match(line, "<name>(.*)</name>")
 
+        if title ~= nil and not string.find(title, feed[2]) then
+            title = adjustLongString(title, warg)
             -- Spam sanitize the subject and store
             mail["{subject}"] = helpers.escape(title)
-            -- If this breaks the loop, then the author won't be set
-            if mail["{sender}"] ~= "N/A" then
-                break 
-            end
+        end
+
+        if sender ~= nil and mail["{sender}"] == "N/A" then
+            sender = adjustLongString(sender, warg)
+            -- Spam sanitize the subject and store
+            mail["{sender}"] = helpers.escape(sender)
+            break
         end
     end
     f:close()
