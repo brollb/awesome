@@ -409,7 +409,7 @@ globalkeys = awful.util.table.join(
                   awful.util.getdir("cache") .. "/history_eval")
               end),
     -- Menubar
-    awful.key({ modkey }, "p", function() menubar.show() end)
+    awful.key({ modkey }, "p", function() menubar.show() end),
     --Custom key bindings
     awful.key({ modkey,           }, "Escape", function() awful.util.spawn("slimlock") end),
     awful.key({ }, "Menu", function() awful.util.spawn(terminal .. " -e ranger") end),
@@ -462,7 +462,7 @@ clientkeys = awful.util.table.join(
         function (c)
             c.maximized_horizontal = not c.maximized_horizontal
             c.maximized_vertical   = not c.maximized_vertical
-        end),
+        end)
 )
 
 -- Bind all key numbers to tags.
