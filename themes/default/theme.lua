@@ -21,11 +21,6 @@ theme.border_width  = 1
 theme.border_normal = "#000000"
 theme.border_focus  = "#535d6c"
 theme.border_marked = "#91231c"
-theme.wifi = 
-{
-    connected = "/home/irishninja/.config/awesome/icons/wifi_bad.png"
-    disconnected = "/home/irishninja/.config/awesome/icons/wifi_good.png"
-}
 
 -- There are other variable sets
 -- overriding the default one when
