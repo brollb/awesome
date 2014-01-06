@@ -45,6 +45,9 @@ terminal = "xterm"
 editor = os.getenv("EDITOR") or "editor"
 editor_cmd = terminal .. " -e " .. editor
 
+-- This is used for the battery to display info on. The name can be found in /sys/class/power_supply/
+battery = "BAT1"
+
 -- Default modkey.
 -- Usually, Mod4 is the key with a logo between Control and Alt.
 -- If you do not like this or do not have such a key,
@@ -130,7 +133,7 @@ vicious.register(battwidget.text, vicious.widgets.bat, function(widget, args)
 		battwidget.tooltip.text = " " .. args[3] .. " Remaining "
 	end
 	return '<span color=' .. color .. '>' .. args[2] .. "%" .. '</span>'
-end, 11, 'BAT1')
+end, 11, battery)
 
 -- Create alsamixer widget
 local alsawidget =
