@@ -38,27 +38,20 @@ vicious.register (gmailwidget.text, vicious.widgets.gmail, function (widget, arg
 	local text = ""
 	local color = "'#970011'"
 
-	if args["{count}"] ~= 0 then
-        local msg = args["{sender}"];
-        if args["{sender}"] == nil then
-            msg = 'nil'
-        end
-		--gmailwidget._notify(args["{sender}"])
-        if gmailwidget.unread < args["{count}"] then
-            gmailwidget._notify(msg)
+        if gmailwidget.unread < args["{count}"] and args["{sender}"] ~= nil then
+            gmailwidget._notify(args["{sender}"])
         end
 
-		--Setting the tool tip text
-		local txt = "Last Message Info\nSender: " .. args["{sender}"] .. "\nSubject: " .. args["{subject}"]
-		gmailwidget.tooltip:set_text(txt)
-		if args["{count}"] > 1 then
-			text = "<span color = " .. color .. "> " .. args["{count}"] .. " Unread Emails " .. "</span>:: "
-		else
-			text = "<span color = " .. color .. "> " .. args["{count}"] .. " Unread Email " .. "</span>:: "
-		end
+	--Setting the tool tip text
+	local txt = "Last Message Info\nSender: " .. args["{sender}"] .. "\nSubject: " .. args["{subject}"]
+	gmailwidget.tooltip:set_text(txt)
+	if args["{count}"] > 1 then
+	text = "<span color = " .. color .. "> " .. args["{count}"] .. " Unread Emails " .. "</span>:: "
+	else
+	text = "<span color = " .. color .. "> " .. args["{count}"] .. " Unread Email " .. "</span>:: "
 	end
 
-    gmailwidget.unread = args["{count}"]
+	gmailwidget.unread = args["{count}"]
 
 	return text
 end, 13)
