@@ -1,8 +1,3 @@
----------------------------------------------
---										   --
---			Modified Gmail Widget		   --
---			 							   --
----------------------------------------------
 -- Don't forget to copy the modified gmail.lua file in /usr/share/lua/5.2/vicious/widgets
 local wibox = require("wibox")
 local naughty = require("naughty")
