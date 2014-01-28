@@ -47,6 +47,8 @@ vicious.register (gmailwidget.text, vicious.widgets.gmail, function (widget, arg
 	gmailwidget.tooltip:set_text(txt)
 	if args["{count}"] > 1 then
 	    text = "<span color = " .. color .. "> " .. args["{count}"] .. " Unread Emails " .. "</span>:: "
+    elseif args["{count}"] == 1 then
+	    text = "<span color = " .. color .. "> " .. args["{count}"] .. " Unread Email " .. "</span>:: "
 	end
 
 	gmailwidget.unread = args["{count}"]
