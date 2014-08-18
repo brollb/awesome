@@ -41,7 +41,8 @@ end
 
 -- {{{ Variable definitions
 -- Themes define colours, icons, and wallpapers
-beautiful.init("/usr/share/awesome/themes/default/theme.lua")
+--beautiful.init("/usr/share/awesome/themes/default/theme.lua")
+beautiful.init("/home/brian/.config/awesome/themes/default_/theme.lua")
 
 -- This is used later as the default terminal and editor to run.
 terminal = "xterm"
@@ -408,7 +409,7 @@ globalkeys = awful.util.table.join(
         awful.util.spawn(terminal .. " -e ranger")
     end),
     awful.key({ modkey }, "Menu", function()
-        awful.util.spawn("chromium")
+        awful.util.spawn("google-chrome-stable")
     end),
     awful.key({ modkey }, "Escape", function()
         awful.util.spawn("slimlock")
