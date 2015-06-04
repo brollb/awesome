@@ -1,0 +1,6 @@
+ext pdf = apvlv "$@"
+
+ext odt = libreoffice "$@"
+ext doc = libreoffice "$@"
+ext docx = libreoffice "$@"
+ext ppt = libreoffice "$@"
