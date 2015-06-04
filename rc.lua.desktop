@@ -314,7 +314,9 @@ for s = 1, screen.count() do
 
     -- Widgets that are aligned to the right
     local right_layout = wibox.layout.fixed.horizontal()
-    if s == 2 then 
+    if s == 1 then 
+        right_layout:add(uptimewidget.text) 
+    elseif s == 2 then 
         right_layout:add(wibox.widget.systray()) 
         right_layout:add(updatewidget) 
         right_layout:add(separator) 
@@ -326,7 +328,7 @@ for s = 1, screen.count() do
         right_layout:add(separator) 
         right_layout:add(alsawidget.text) 
         right_layout:add(separator) 
-        right_layout:add(uptimewidget.text) 
+        right_layout:add(mytextclock)
     else
         -- right_layout:add(gmailwidget.text) 
         right_layout:add(mytextclock)
