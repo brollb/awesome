@@ -47,6 +47,7 @@ beautiful.init("/home/brian/.config/awesome/themes/default_/theme.lua")
 -- This is used later as the default terminal and editor to run.
 terminal = "xterm"
 editor = os.getenv("EDITOR") or "vim"
+home_path = os.getenv("HOME")
 editor_cmd = terminal .. " -e " .. editor
 
 -- Default modkey.
@@ -55,6 +56,7 @@ editor_cmd = terminal .. " -e " .. editor
 -- I suggest you to remap Mod4 to another key using xmodmap or other tools.
 -- However, you can use another modifier like Mod1, but it may interact with others.
 modkey = "Mod4"
+browser = "firefox"
 
 -- Table of layouts to cover with awful.layout.inc, order matters.
 local layouts =
@@ -74,11 +76,50 @@ local layouts =
 }
 -- }}}
 
+-- {{{ Wallpaper Helper
+-- Lua implementation of PHP scandir function
+function scandir(directory)
+    local i, t, popen = 0, {}, io.popen
+    for filename in popen('ls "'..directory..'"'):lines() do
+        i = i + 1
+        t[i] = filename
+    end
+    return t
+end
+
+wp_timeout  = 300
+wp_path = home_path.."/Pictures/wallpapers/"
+wp_files = scandir(wp_path)
+wp_index = math.random(1, #wp_files)
+ 
+-- setup the timer
+wp_timer = timer { timeout = wp_timeout }
+function set_rand_wallpaper()
+    -- set wallpaper to current index
+    for s = 1, screen.count() do
+        gears.wallpaper.maximized(wp_path .. wp_files[wp_index] , s, true)
+        wp_index = math.random( 1, #wp_files)
+    end
+
+    -- stop the timer (we don't need multiple instances running at the same time)
+    wp_timer:stop()
+
+    -- get next random index
+
+    --restart the timer
+    wp_timer.timeout = wp_timeout
+    wp_timer:start()
+end
+wp_timer:connect_signal("timeout", set_rand_wallpaper)
+
+-- set the first wallpapers
+set_rand_wallpaper()
+
+-- initial start when rc.lua is first run
+wp_timer:start()
+
 -- {{{ Wallpaper
 if beautiful.wallpaper then
-    for s = 1, screen.count() do
-        gears.wallpaper.maximized(beautiful.wallpaper, s, true)
-    end
 end
 -- }}}
 
@@ -282,7 +323,7 @@ for s = 1, screen.count() do
 
     -- Widgets that are aligned to the right
     local right_layout = wibox.layout.fixed.horizontal()
-    if s == 2 then right_layout:add(wibox.widget.systray()) end
+    if s == 1 then right_layout:add(wibox.widget.systray()) end
     right_layout:add(space)
     right_layout:add(alsawidget.text)
     right_layout:add(separator)
@@ -409,7 +450,7 @@ globalkeys = awful.util.table.join(
         awful.util.spawn(terminal .. " -e ranger")
     end),
     awful.key({ modkey }, "Menu", function()
-        awful.util.spawn("google-chrome-stable")
+        awful.util.spawn(browser)
     end),
     awful.key({ modkey }, "Escape", function()
         awful.util.spawn("slimlock")
