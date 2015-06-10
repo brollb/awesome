@@ -43,6 +43,7 @@ Bundle "vim-scripts/JavaScript-Indent"
 
 " Syntax highlighting
 Bundle "jelera/vim-javascript-syntax"
+Bundle "derekwyatt/vim-scala"
 
 " Smarter autocomplete in js
 Bundle "myhere/vim-nodejs-complete" 
