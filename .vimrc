@@ -51,7 +51,7 @@ Bundle "myhere/vim-nodejs-complete"
 set splitbelow
 
 " Syntastic... Hopefully no conflict with jshint...
-"Bundle scrooloose/syntastic
+Bundle "scrooloose/syntastic"
 
 " nerd tree
 Bundle "scrooloose/nerdtree"
@@ -62,6 +62,10 @@ Bundle "funorpain/vim-cpplint"
 " js linter
 Bundle "Shutnik/jshint2.vim"
 let jshint2_save = 1
+
+let g:syntastic_scala_checkers=['scalastyle']
+let g:syntastic_scala_scalastyle_jar="~/.config/configs/scalastyle-batch_2.10.jar"
+let g:syntastic_scala_scalastyle_config_file="~/.config/configs/scalastyle.xml"
 
 " Generate JSDoc for javascript
 Bundle "heavenshell/vim-jsdoc"
@@ -77,6 +81,9 @@ Bundle "tpope/vim-surround"
 
 " Trying out a java plugin
 " Bundle "vim-scripts/Vim-JDE"
+
+" Multiple cursors
+Bundle "terryma/vim-multiple-cursors"
 
 " Fugitive
 Bundle "tpope/vim-fugitive"
