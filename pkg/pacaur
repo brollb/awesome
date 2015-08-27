@@ -1,0 +1,19 @@
+wget https://aur.archlinux.org/cgit/aur.git/snapshot/cower-git.tar.gz
+wget https://aur.archlinux.org/cgit/aur.git/snapshot/pacaur-git.tar.gz
+
+mkdir tmp
+mv cower-git.tar.gz tmp
+mv pacaur-git.tar.gz tmp
+cd tmp
+tar -xvf pacaur-git.tar.gz
+tar -xvf cower-git.tar.gz
+
+cd cower-git
+makepkg -s
+sudo pacman -U $(ls | grep pkg.tar.xz)
+cd ../pacaur-git
+makepkg -s
+sudo pacman -U $(ls | grep pkg.tar.xz)
+
+cd ../..
+rm -rf tmp
