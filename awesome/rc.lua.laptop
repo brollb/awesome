@@ -56,7 +56,7 @@ editor_cmd = terminal .. " -e " .. editor
 -- I suggest you to remap Mod4 to another key using xmodmap or other tools.
 -- However, you can use another modifier like Mod1, but it may interact with others.
 modkey = "Mod4"
-browser = "firefox"
+browser = "google-chrome-stable"
 
 -- Table of layouts to cover with awful.layout.inc, order matters.
 local layouts =
@@ -162,6 +162,38 @@ local alsawidget =
 	}
 }
 
+-- battery monitor
+-- Battery Status
+ battwidget = 
+ {
+  text = wibox.widget.textbox(),
+  }
+  --tooltip
+  battwidget.tooltip = awful.tooltip ({ objects = { battwidget.text } })
+  battwidget.tooltip:set_text (" Remaining Battery ")
+
+  vicious.register(battwidget.text, vicious.widgets.bat, function(widget, args)
+      battwidget.text:set_text(args[2] .. "%")
+  
+      color = "\"green\""
+          if args[2] < 26 then
+                  color = "\"orange\""
+                      end
+                          if args[2] < 6 and args[1] ~= "+" then
+                                  naughty.notify({ text=args[2] .. "% battery remaining - might want to find an outlet!" })
+                                          color = "\"red\""
+                                              end
+                                                  if args[1] == "+" then
+                                                          color = "\"blue\""
+                                                              end
+                                                                  if args[3] == "N/A"
+                                                                      then
+                                                                              battwidget.tooltip:set_text (" Remaining Battery ")
+                                                                                  else
+                                                                                          battwidget.tooltip:set_text(" " .. args[3] .. " Remaining ")
+                                                                                              end
+                                                                                                  return '<span color=' .. color .. '>' .. args[2] .. "%" .. '</span>'
+                                                                                                      end, 11, 'BAT0')
 -- widget
 alsawidget.text = wibox.widget.textbox()
 alsawidget.text:buttons (awful.util.table.join (
@@ -322,6 +354,8 @@ for s = 1, screen.count() do
     right_layout:add(space)
     right_layout:add(alsawidget.text)
     right_layout:add(separator)
+    right_layout:add(battwidget.text)
+    right_layout:add(separator)
     right_layout:add(mytextclock)
     right_layout:add(mylayoutbox[s])
 
@@ -424,7 +458,7 @@ globalkeys = awful.util.table.join(
         awful.util.spawn("xrandr --output HDMI1 --auto --right-of LVDS1")
     end),
     awful.key({ }, "Print", function()
-        local dir = os.getenv("HOME") .. "/Pictures/screenshots/"
+        local dir = os.getenv("HOME") .. "/pictures/screenshots/"
         if awful.util.file_readable( dir ) == false then
             awful.util.mkdir( dir );
         end
