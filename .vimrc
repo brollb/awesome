@@ -1,25 +1,24 @@
 " Before using this file, you must install Vundle. You can do so by running
 " the following:
 " git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+
 set grepprg=grep\ -nH\ $*
 let g:tex_flavor = "latex"
 set runtimepath=~/.vim,$VIM/vimfiles,$VIMRUNTIME,$VIM/vimfiles/after,~/.vim/after,/usr/share/vim/vimfiles
 
+let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+colorscheme desert
 set nocompatible
 filetype off
 
 " alias
 nnoremap <c-k> <c-w><c-w>
 
-" set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-
-" let Vundle manage Vundle, required
-Plugin 'gmarik/Vundle.vim'
+" set the runtime path to include vim-plug and initialize
+call plug#begin('~/.vim/plugged')
 
 " ultisnips
-Plugin 'SirVer/ultisnips'
+Plug 'SirVer/ultisnips'
 
 " Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
 let g:UltiSnipsExpandTrigger="<tab>"
@@ -27,40 +26,43 @@ let g:UltiSnipsJumpForwardTrigger="<c-b>"
 let g:UltiSnipsJumpBackwardTrigger="<c-z>"
 
 " SuperTab
-Plugin 'ervandew/supertab'
+Plug 'ervandew/supertab'
 let g:SuperTabDefaultCompletionType = "context"
 
 " Code snippets with tab
-Plugin 'honza/vim-snippets'
+Plug 'honza/vim-snippets'
 " Extra JS stuff
-" For some crazy reason, these should be Bundle...
+" For some crazy reason, these should be Plug...
 "
 " Misc js things (better highlighting, etc)
 " Bundle pangloss/vim-javascript 
 
 " Indentation
-Bundle "vim-scripts/JavaScript-Indent"
+Plug 'vim-scripts/JavaScript-Indent'
 
 " Syntax highlighting
-Bundle "jelera/vim-javascript-syntax"
-Bundle "derekwyatt/vim-scala"
+Plug 'jelera/vim-javascript-syntax'
+Plug 'briancollins/vim-jst'
+Plug 'derekwyatt/vim-scala'
+Plug 'rust-lang/rust.vim'
+"Plug 'racer-rust/vim-racer'
 
 " Smarter autocomplete in js
-Bundle "myhere/vim-nodejs-complete" 
+Plug 'myhere/vim-nodejs-complete' 
 " Fixing the autocomplete help location
 set splitbelow
 
 " Syntastic... Hopefully no conflict with jshint...
-Bundle "scrooloose/syntastic"
+Plug 'scrooloose/syntastic'
 
 " nerd tree
-Bundle "scrooloose/nerdtree"
+Plug 'scrooloose/nerdtree'
 
 " cpplint
-Bundle "funorpain/vim-cpplint"
+Plug 'funorpain/vim-cpplint'
 
 " js linter
-Bundle "Shutnik/jshint2.vim"
+Plug 'Shutnik/jshint2.vim'
 let jshint2_save = 1
 
 let g:syntastic_scala_checkers=['scalastyle']
@@ -68,32 +70,32 @@ let g:syntastic_scala_scalastyle_jar="~/.config/configs/scalastyle-batch_2.10.ja
 let g:syntastic_scala_scalastyle_config_file="~/.config/configs/scalastyle.xml"
 
 " Generate JSDoc for javascript
-Bundle "heavenshell/vim-jsdoc"
+Plug 'heavenshell/vim-jsdoc'
 
 " tern for js autocomplete
-"Bundle "marijnh/tern_for_vim"
+"Plug "marijnh/tern_for_vim"
 
 " Easy commenting
-Bundle "scrooloose/nerdcommenter"
+Plug 'scrooloose/nerdcommenter'
 
 " Edit surrounding tags, quotes, etc
-Bundle "tpope/vim-surround"
+Plug 'tpope/vim-surround'
 
 " Trying out a java plugin
-" Bundle "vim-scripts/Vim-JDE"
+" Plug "vim-scripts/Vim-JDE"
 
 " Multiple cursors
-Bundle "terryma/vim-multiple-cursors"
+Plug 'terryma/vim-multiple-cursors'
 
 " Fugitive
-Bundle "tpope/vim-fugitive"
+Plug 'tpope/vim-fugitive'
 
 " Visualizing the undo/redo tree of vim
-Bundle "sjl/gundo.vim"
+Plug 'sjl/gundo.vim'
 nnoremap <F5> :GundoToggle<CR>
 
 " All of your Plugins must be added before the following line
-call vundle#end()            " required
+call plug#end()            " required
 filetype plugin indent on    " required
 
 set nu
@@ -130,3 +132,5 @@ command! -nargs=1 Silent
 
 autocmd BufWritePost *.tex :Silent pdflatex %
 
+highlight OverLength ctermbg=red ctermfg=white guibg=#aa5555
+match OverLength /\%81v.\+/
