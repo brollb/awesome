@@ -11,7 +11,7 @@ antigen theme clean
 
 antigen-apply
 
-export PATH="/home/brian/.gem/ruby/2.1.0/bin:/home/brian/.gem/ruby/2.2.0/bin:/usr/local/heroku/bin:/home/brian/.gem/ruby/2.1.0/bin:/usr/local/sbin:/usr/local/bin:/usr/bin:/opt/android-sdk/platform-tools:/opt/android-sdk/tools:/opt/java/bin:/opt/java/db/bin:/opt/java/jre/bin:/usr/bin/vendor_perl:/usr/bin/core_perl"
+export PATH=$HOME/.gem/ruby/2.1.0/bin:$HOME/.gem/ruby/2.2.0/bin:/usr/local/heroku/bin:$HOME/.gem/ruby/2.1.0/bin:/usr/local/sbin:/usr/local/bin:/usr/bin:/opt/android-sdk/platform-tools:/opt/android-sdk/tools:/opt/java/bin:/opt/java/db/bin:/opt/java/jre/bin:/usr/bin/vendor_perl:/usr/bin/core_perl:$PATH
 export EDITOR=$(which nvim)
 
 alias rg="ranger"
