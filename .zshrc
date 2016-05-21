@@ -22,8 +22,7 @@ alias grep="/usr/bin/grep $GREP_OPTIONS"
 unset GREP_OPTIONS
 
 # added by travis gem
-[ -f /home/brian/.travis/travis.sh ] && source /home/brian/.travis/travis.sh
-source /usr/share/nvm/init-nvm.sh
+source $HOME/.nvm/nvm.sh
 
 # autocomplete stuff
 #export fpath=($fpath $HOME/tmp/zsh-autocomplete)

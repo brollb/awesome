@@ -1,11 +1,14 @@
-" Before using this file, you must install Vundle. You can do so by running
-" the following:
-" git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+" Before using this file, you must install [Plug](https://github.com/junegunn/vim-plug)
+" For neovim:
+" curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs \
+"    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
 set grepprg=grep\ -nH\ $*
 let g:tex_flavor = "latex"
-set runtimepath=~/.vim,$VIM/vimfiles,$VIMRUNTIME,$VIM/vimfiles/after,~/.vim/after,/usr/share/vim/vimfiles
+" set runtimepath=~/.vim,$VIM/vimfiles,$VIMRUNTIME,$VIM/vimfiles/after,~/.vim/after,/usr/share/vim/vimfiles
 
+" Map the leader key to SPACE
+let mapleader="\<SPACE>"
 let $NVIM_TUI_ENABLE_TRUE_COLOR=1
 colorscheme desert
 set nocompatible
@@ -15,7 +18,7 @@ filetype off
 nnoremap <c-k> <c-w><c-w>
 
 " set the runtime path to include vim-plug and initialize
-call plug#begin('~/.vim/plugged')
+call plug#begin('~/.config/nvm/plugged')
 
 " ultisnips
 Plug 'SirVer/ultisnips'
@@ -52,9 +55,6 @@ Plug 'myhere/vim-nodejs-complete'
 " Fixing the autocomplete help location
 set splitbelow
 
-" Syntastic... Hopefully no conflict with jshint...
-Plug 'scrooloose/syntastic'
-
 " nerd tree
 Plug 'scrooloose/nerdtree'
 
@@ -62,12 +62,12 @@ Plug 'scrooloose/nerdtree'
 Plug 'funorpain/vim-cpplint'
 
 " js linter
-Plug 'Shutnik/jshint2.vim'
-let jshint2_save = 1
-
-let g:syntastic_scala_checkers=['scalastyle']
-let g:syntastic_scala_scalastyle_jar="~/.config/configs/scalastyle-batch_2.10.jar"
-let g:syntastic_scala_scalastyle_config_file="~/.config/configs/scalastyle.xml"
+Plug 'neomake/neomake'
+let g:neomake_javascript_jshint_maker = {
+    \ 'args': ['--verbose'],
+    \ 'errorformat': '%A%f: line %l\, col %v\, %m \(%t%*\d\)',
+    \ }
+let g:neomake_javascript_enabled_makers = ['jshint', 'eslint']
 
 " Generate JSDoc for javascript
 Plug 'heavenshell/vim-jsdoc'
@@ -121,6 +121,16 @@ set foldmethod=syntax
 
 " Calling cppcheck on save
 " autocmd BufWritePre *.cpp, *.h !cpplint %
+
+" neomake
+autocmd! BufWritePost * Neomake  " Lint/make on save
+
+nmap <Leader><Space>o :lopen<CR>      " open location window
+nmap <Leader><Space>c :lclose<CR>     " close location window
+nmap <Leader><Space>, :ll<CR>         " go to current error/warning
+nmap <Leader><Space>n :lnext<CR>      " next error/warning
+nmap <Leader><Space>p :lprev<CR>      " previous error/warning<Paste>
+
 
 " CPP tab spacing
 "autocmd Filetype cpp setlocal ts=2 sts=2 sw=2

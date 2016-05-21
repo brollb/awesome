@@ -1,5 +1,3 @@
-search 
-search gem
 tabe 
 ! vim UiDevServer.js
 ! node %
@@ -48,3 +46,5 @@ d
 open_with vim
 search nodemon
 o vim
+! ls
+open_with nvim
