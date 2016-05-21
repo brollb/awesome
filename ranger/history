@@ -42,9 +42,9 @@ find Di
 ! grep console *
 rename bootstrap-material-design
 
-d
 open_with vim
 search nodemon
 o vim
 ! ls
 open_with nvim
+d

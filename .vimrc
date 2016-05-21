@@ -9,7 +9,8 @@ let g:tex_flavor = "latex"
 
 " Map the leader key to SPACE
 let mapleader="\<SPACE>"
-let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+" May need to uncomment this line if using linux
+"let $NVIM_TUI_ENABLE_TRUE_COLOR=1
 colorscheme desert
 set nocompatible
 filetype off
