@@ -1,0 +1,50 @@
+tabe 
+! vim UiDevServer.js
+! node %
+! node %f
+! PORT=8000 node %f
+! PORT=8003 node %f
+! PORT=8253 node %f
+mkdir dev
+! vim README.md
+! grep -R tooltipped *
+search con
+find j
+find ma
+find de
+find W
+! vim Server.js
+!
+! mkdir browser
+mkdir functional
+mkdir unit
+! vim utils.js
+! git pull
+! git ci %f
+! git push
+mkdir client
+shell -w cat % >> .gitignore
+! 
+search q
+o vim 
+! grep %f main
+! grep main %f
+search bower
+find s
+search src
+renam
+rename AutoRouter.Worker.inc.js
+o v
+rename workerTest.js
+find 
+find Wi
+find Di
+! grep console *
+rename bootstrap-material-design
+
+open_with vim
+search nodemon
+o vim
+! ls
+open_with nvim
+d
