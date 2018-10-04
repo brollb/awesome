@@ -11,13 +11,18 @@ antigen theme clean
 
 antigen-apply
 
-export PATH=$HOME/.gem/ruby/2.1.0/bin:$HOME/.gem/ruby/2.2.0/bin:/usr/local/heroku/bin:$HOME/.gem/ruby/2.1.0/bin:/usr/local/sbin:/usr/local/bin:/usr/bin:/opt/android-sdk/platform-tools:/opt/android-sdk/tools:/opt/java/bin:/opt/java/db/bin:/opt/java/jre/bin:/usr/bin/vendor_perl:/usr/bin/core_perl:$PATH
+export PATH=$HOME/.gem/ruby/2.1.0/bin:$HOME/.gem/ruby/2.2.0/bin:/usr/local/heroku/bin:$HOME/.gem/ruby/2.1.0/bin:/usr/local/sbin:/usr/local/bin:/usr/bin:/opt/android-sdk/platform-tools:/opt/android-sdk/tools:/opt/java/bin:/opt/java/db/bin:/opt/java/jre/bin:/usr/bin/vendor_perl:/usr/bin/core_perl:$HOME/.cache/pacaur/rust-clippy/src/build/bin:$PATH
+
+# Add GOPATH
+export PATH=$PATH:$HOME/go/bin:$HOME/.cargo/bin
 export EDITOR=$(which nvim)
 
-alias rg="ranger"
+alias rgr="ranger"
 alias vi="nvim"
 alias vim="nvim"
 alias top="top -o%CPU"
+alias en="trans hu:en"
+alias hu="trans en:hu"
 alias grep="/usr/bin/grep $GREP_OPTIONS"
 unset GREP_OPTIONS
 
