@@ -191,7 +191,7 @@ if executable('rls')
   " Use LanguageServer for omnifunc completion
   autocmd FileType javascript setlocal omnifunc=LanguageClient#complete
 else
-  echo "javascript-typescript-stdio not installed!\n"
+  echo "rls not installed!\n"
   :cq
 endif
 
