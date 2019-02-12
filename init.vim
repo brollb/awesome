@@ -48,6 +48,8 @@ Plug 'jelera/vim-javascript-syntax'
 Plug 'briancollins/vim-jst'
 Plug 'derekwyatt/vim-scala'
 
+"Plug 'coala/coala-vim'
+
 "" Smarter autocomplete in js
 "Plug 'myhere/vim-nodejs-complete' 
 "" Fixing the autocomplete help location
@@ -160,6 +162,9 @@ autocmd FileType javascript match OverLength /\%81v.\+/
 
 " Language Servers
 let g:LanguageClient_autoStart = 1 
+let g:LanguageClient_settingsPath = '/home/irishninja/.config/nvim/settings.json'
+let g:LanguageClient_loadSettings = 1
+
 let g:LanguageClient_serverCommands = {}
 if executable('javascript-typescript-stdio')
   let g:LanguageClient_serverCommands.javascript = ['javascript-typescript-stdio']
@@ -189,10 +194,19 @@ autocmd FileType * nnoremap <buffer>
 if executable('rls')
   let g:LanguageClient_serverCommands.rust = ['rls']
   " Use LanguageServer for omnifunc completion
-  autocmd FileType javascript setlocal omnifunc=LanguageClient#complete
+  autocmd FileType rust setlocal omnifunc=LanguageClient#complete
 else
   echo "rls not installed!\n"
   :cq
+endif
+
+if executable('cquery')
+  let g:LanguageClient_serverCommands.cpp = ['cquery', '--log-file=/tmp/cq.log']
+  " Use LanguageServer for omnifunc completion
+  autocmd FileType cpp setlocal omnifunc=LanguageClient#complete
+else
+  echo "cquery not installed!\n"
+  ":cq
 endif
 
 " w!! to hard overwrite
