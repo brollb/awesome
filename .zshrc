@@ -45,5 +45,6 @@ mocha() {
   $mocha -c "$@" > >(perl -pe "$substitution") 2> >(perl -pe "$substitution" 1>&2)
 }
 
-source /usr/share/fzf/key-bindings.zsh
+# fzf
 source /usr/share/fzf/completion.zsh
+source /usr/share/fzf/key-bindings.zsh
