@@ -39,7 +39,7 @@ XTerm.vt100.translations: #override \n\
 !
 !
 ! ! Resourses {{{
-XTerm*background:  blackgravel
+XTerm*background:  darkgravel
 !XTerm*foreground:  plain
 XTerm*cursorColor: lime
 XTerm*scrollColor: deepgravel
