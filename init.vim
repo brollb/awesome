@@ -10,6 +10,7 @@ let $NVIM_TUI_ENABLE_TRUE_COLOR=1
 let mapleader=" "
 colorscheme desert
 set nocompatible
+set clipboard=unnamedplus
 filetype off
 
 " alias
