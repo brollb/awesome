@@ -172,7 +172,7 @@ if executable('javascript-typescript-stdio')
   autocmd FileType javascript setlocal omnifunc=LanguageClient#complete
 else
   echo "javascript-typescript-stdio not installed!\n"
-  :cq
+  ":cq
 endif
 
 " Rust
@@ -197,7 +197,7 @@ if executable('rls')
   autocmd FileType rust setlocal omnifunc=LanguageClient#complete
 else
   echo "rls not installed!\n"
-  :cq
+  ":cq
 endif
 
 if executable('cquery')
