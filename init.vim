@@ -10,6 +10,7 @@ let $NVIM_TUI_ENABLE_TRUE_COLOR=1
 let mapleader=" "
 colorscheme desert
 set nocompatible
+set clipboard=unnamedplus
 filetype off
 
 " alias
@@ -158,7 +159,7 @@ command! -nargs=1 Silent
 autocmd BufWritePost *.tex :Silent pdflatex %
 
 highlight OverLength ctermbg=red ctermfg=white guibg=#aa5555
-autocmd FileType javascript match OverLength /\%81v.\+/
+autocmd FileType javascript match OverLength /\%81v/
 
 " Language Servers
 let g:LanguageClient_autoStart = 1 
