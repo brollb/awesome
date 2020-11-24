@@ -20,21 +20,23 @@ nnoremap <c-k> <c-w><c-w>
 call plug#begin('~/.config/nvim/plugged')
 
 " ultisnips
-Plug 'SirVer/ultisnips'
+"Plug 'SirVer/ultisnips'
 "Plug 'Vigemus/iron.nvim'
 
 "" Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
-let g:UltiSnipsExpandTrigger="<tab>"
-let g:UltiSnipsJumpForwardTrigger="<c-b>"
-let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+"let g:UltiSnipsExpandTrigger="<tab>"
+"let g:UltiSnipsJumpForwardTrigger="<c-b>"
+"let g:UltiSnipsJumpBackwardTrigger="<c-z>"
 
 "" SuperTab
 "Plug 'ervandew/supertab'
 "let g:SuperTabDefaultCompletionType = "context"
 
 "" Code snippets with tab
-Plug 'honza/vim-snippets'
+"Plug 'honza/vim-snippets'
 Plug 'raimondi/delimitmate'
+Plug 'leafoftree/vim-svelte-plugin'
+Plug 'ruanyl/vim-gh-line'
 "" Extra JS stuff
 "" For some crazy reason, these should be Plug...
 ""

@@ -1,5 +1,5 @@
 # Path to your oh-my-zsh installation.
-source "$HOME/.antigen/antigen.zsh"
+source "/usr/share/zsh/share/antigen.zsh"
 
 antigen use oh-my-zsh
 antigen bundle git
@@ -7,7 +7,7 @@ antigen bundle command-not-found
 
 antigen bundle zsh-users/zsh-syntax-highlighting
 antigen bundle kennethreitz/autoenv
-antigen theme clean
+antigen theme af-magic
 
 antigen apply
 
@@ -27,7 +27,8 @@ alias grep="/usr/bin/grep $GREP_OPTIONS"
 unset GREP_OPTIONS
 
 # added by travis gem
-source $HOME/.nvm/nvm.sh
+export NVM_DIR=$HOME/.nvm
+source /usr/share/nvm/nvm.sh
 
 # autocomplete stuff
 #export fpath=($fpath $HOME/tmp/zsh-autocomplete)
