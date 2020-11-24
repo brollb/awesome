@@ -34,8 +34,8 @@ Plug 'sbdchd/neoformat'
 Plug 'jrblevin/markdown-mode'
 
 "" SuperTab
-Plug 'ervandew/supertab'
-let g:SuperTabDefaultCompletionType = "context"
+"Plug 'ervandew/supertab'
+"let g:SuperTabDefaultCompletionType = "context"
 
 "" Code snippets with tab
 "Plug 'honza/vim-snippets'
@@ -84,9 +84,6 @@ let g:syntastic_pug_checkers = ['pug_lint']
 "" Generate JSDoc for javascript
 "Plug 'heavenshell/vim-jsdoc'
 
-"" tern for js autocomplete
-"Plug "marijnh/tern_for_vim"
-
 "" Easy commenting
 Plug 'scrooloose/nerdcommenter'
 
@@ -100,13 +97,13 @@ Plug 'tpope/vim-surround'
 Plug 'terryma/vim-multiple-cursors'
 
 "" Fugitive
-Plug 'tpope/vim-fugitive'
+"Plug 'tpope/vim-fugitive'
 
 "Plug 'roxma/nvim-completion-manager'
 
-Plug 'autozimu/LanguageClient-neovim', { 'do': 'UpdateRemotePlugins' }
+"Plug 'autozimu/LanguageClient-neovim', { 'do': 'UpdateRemotePlugins' }
 " Rust
-set hidden
+"set hidden
 "Plug 'autozimu/LanguageClient-neovim', {
 "    \ 'branch': 'next',
 "    \ 'do': 'bash install.sh',
@@ -115,9 +112,12 @@ set hidden
 "nnoremap <silent> gd :call LanguageClient_textDocument_definition()<CR>
 "nnoremap <silent> <F2> :call LanguageClient_textDocument_rename()<CR>
 
-Plug 'rust-lang/rust.vim'
-Plug 'racer-rust/vim-racer'
-Plug 'roxma/nvim-cm-racer'
+" Set of common configs
+Plug 'neovim/nvim-lspconfig'
+Plug 'tjdevries/lsp_extensions.nvim'
+Plug 'nvim-lua/completion-nvim'
+Plug 'nvim-lua/diagnostic-nvim'
+
 
 "let g:syntastic_rust_checkers=['clippy']
 
@@ -222,3 +222,58 @@ endif
 cnoremap w!! execute 'silent! write !sudo tee % >/dev/null' <bar> edit!
 
 "let g:LanguageClient_loggingLevel = 'DEBUG'
+
+" customization for rust support :)
+syntax enable
+filetype plugin indent on
+
+set completeopt=menuone,noinsert,noselect
+
+set shortmess+=c
+
+" https://github.com/neovim/nvim-lspconfig#rust_analyzer
+lua <<EOF
+-- nvim_lsp object
+local nvim_lsp = require'nvim_lsp'
+
+local on_attach = function(client)
+    require'completion'.on_attach(client)
+    require'diagnostic'.on_attach(client)
+end
+
+nvim_lsp.rust_analyzer.setup({ on_attach=on_attach })
+-- nvim_lsp.bashls.setup({ on_attach=on_attach })
+
+EOF
+
+" LSP shortcuts
+nnoremap <silent> <c-]> <cmd>lua vim.lsp.buf.definition()<CR>
+nnoremap <silent> K     <cmd>lua vim.lsp.buf.hover()<CR>
+nnoremap <silent> gD    <cmd>lua vim.lsp.buf.implementation()<CR>
+nnoremap <silent> <c-k> <cmd>lua vim.lsp.buf.signature_help()<CR>
+nnoremap <silent> 1gD   <cmd>lua vim.lsp.buf.type_definition()<CR>
+nnoremap <silent> gr    <cmd>lua vim.lsp.buf.references()<CR>
+nnoremap <silent> g0    <cmd>lua vim.lsp.buf.document_symbol()<CR>
+nnoremap <silent> gW    <cmd>lua vim.lsp.buf.workspace_symbol()<CR>
+nnoremap <silent> gd    <cmd>lua vim.lsp.buf.declaration()<CR>
+
+" Visualize diagnostics
+let g:diagnostic_enable_virtual_text = 1
+let g:diagnostic_trimmed_virtual_text = '40'
+" Don't show diagnostics while in insert mode
+let g:diagnostic_insert_delay = 1
+
+" Set updatetime for CursorHold
+" 300ms of no cursor movement to trigger CursorHold
+set updatetime=300
+" Show diagnostic popup on cursor hold
+autocmd CursorHold * lua vim.lsp.util.show_line_diagnostics()
+
+" Goto previous/next diagnostic warning/error
+nnoremap <silent> g[ <cmd>PrevDiagnosticCycle<cr>
+nnoremap <silent> g] <cmd>NextDiagnosticCycle<cr>
+set signcolumn=yes
+
+" Add type hints
+autocmd CursorMoved,InsertLeave,BufEnter,BufWinEnter,TabEnter,BufWritePost *
+\ lua require'lsp_extensions'.inlay_hints{ prefix = '', highlight = "Comment" }
