@@ -19,6 +19,9 @@ nnoremap <c-k> <c-w><c-w>
 " set the runtime path to include vim-plug and initialize
 call plug#begin('~/.config/nvim/plugged')
 
+Plug 'sbdchd/neoformat'
+"autocmd BufWritePre,TextChanged,InsertLeave *.js Neoformat
+
 " ultisnips
 "Plug 'SirVer/ultisnips'
 "Plug 'Vigemus/iron.nvim'
@@ -27,6 +30,8 @@ call plug#begin('~/.config/nvim/plugged')
 "let g:UltiSnipsExpandTrigger="<tab>"
 "let g:UltiSnipsJumpForwardTrigger="<c-b>"
 "let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+
+Plug 'jrblevin/markdown-mode'
 
 "" SuperTab
 Plug 'ervandew/supertab'
@@ -50,6 +55,7 @@ Plug 'vim-scripts/JavaScript-Indent'
 Plug 'jelera/vim-javascript-syntax'
 Plug 'briancollins/vim-jst'
 Plug 'derekwyatt/vim-scala'
+Plug 'digitaltoad/vim-pug'
 
 "Plug 'coala/coala-vim'
 
