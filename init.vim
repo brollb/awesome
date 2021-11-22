@@ -19,29 +19,14 @@ nnoremap <c-k> <c-w><c-w>
 " set the runtime path to include vim-plug and initialize
 call plug#begin('~/.config/nvim/plugged')
 
-" ultisnips
-"Plug 'SirVer/ultisnips'
-"Plug 'Vigemus/iron.nvim'
-
-"" Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
-"let g:UltiSnipsExpandTrigger="<tab>"
-"let g:UltiSnipsJumpForwardTrigger="<c-b>"
-"let g:UltiSnipsJumpBackwardTrigger="<c-z>"
-
-"" SuperTab
-"Plug 'ervandew/supertab'
-"let g:SuperTabDefaultCompletionType = "context"
-
-"" Code snippets with tab
-"Plug 'honza/vim-snippets'
-Plug 'raimondi/delimitmate'
+" svelte
 Plug 'leafoftree/vim-svelte-plugin'
+
+" open line on github
 Plug 'ruanyl/vim-gh-line'
-"" Extra JS stuff
-"" For some crazy reason, these should be Plug...
-""
-"" Misc js things (better highlighting, etc)
-"" Bundle pangloss/vim-javascript 
+
+"" autoclose brackets, quotes, etc
+Plug 'raimondi/delimitmate'
 
 "" Indentation
 Plug 'vim-scripts/JavaScript-Indent'
@@ -84,14 +69,11 @@ Plug 'scrooloose/nerdcommenter'
 "" Edit surrounding tags, quotes, etc
 Plug 'tpope/vim-surround'
 
-"" Trying out a java plugin
-"" Plug "vim-scripts/Vim-JDE"
-
 "" Multiple cursors
 Plug 'terryma/vim-multiple-cursors'
 
 "" Fugitive
-"Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-fugitive'
 
 "Plug 'roxma/nvim-completion-manager'
 
@@ -226,18 +208,54 @@ set completeopt=menuone,noinsert,noselect
 set shortmess+=c
 
 " https://github.com/neovim/nvim-lspconfig#rust_analyzer
-lua <<EOF
--- nvim_lsp object
-local nvim_lsp = require'nvim_lsp'
+lua << EOF
+local nvim_lsp = require('lspconfig')
 
-local on_attach = function(client)
-    require'completion'.on_attach(client)
-    require'diagnostic'.on_attach(client)
+-- Use an on_attach function to only map the following keys
+-- after the language server attaches to the current buffer
+local on_attach = function(client, bufnr)
+  local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
+  local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
+
+  -- Enable completion triggered by <c-x><c-o>
+  buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
+
+  -- Mappings.
+  local opts = { noremap=true, silent=true }
+
+  -- See `:help vim.lsp.*` for documentation on any of the below functions
+  buf_set_keymap('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
+  buf_set_keymap('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
+  buf_set_keymap('n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
+  buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
+  buf_set_keymap('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
+  buf_set_keymap('n', '<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
+  buf_set_keymap('n', '<space>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
+  buf_set_keymap('n', '<space>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
+  buf_set_keymap('n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
+  buf_set_keymap('n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
+  buf_set_keymap('n', '<space>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
+  buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
+  buf_set_keymap('n', '<space>e', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
+  buf_set_keymap('n', '[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
+  buf_set_keymap('n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
+  buf_set_keymap('n', '<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
+  buf_set_keymap('n', '<space>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
+
 end
 
-nvim_lsp.rust_analyzer.setup({ on_attach=on_attach })
--- nvim_lsp.bashls.setup({ on_attach=on_attach })
-
+-- Use a loop to conveniently call 'setup' on multiple servers and
+-- map buffer local keybindings when the language server attaches
+-- local servers = { 'pyright', 'rust_analyzer', 'tsserver' }
+local servers = { 'rust_analyzer' }
+for _, lsp in ipairs(servers) do
+  nvim_lsp[lsp].setup {
+    on_attach = on_attach,
+    flags = {
+      debounce_text_changes = 150,
+    }
+  }
+end
 EOF
 
 " LSP shortcuts
@@ -261,7 +279,7 @@ let g:diagnostic_insert_delay = 1
 " 300ms of no cursor movement to trigger CursorHold
 set updatetime=300
 " Show diagnostic popup on cursor hold
-autocmd CursorHold * lua vim.lsp.util.show_line_diagnostics()
+"autocmd CursorHold * lua vim.lsp.util.show_line_diagnostics()
 
 " Goto previous/next diagnostic warning/error
 nnoremap <silent> g[ <cmd>PrevDiagnosticCycle<cr>
@@ -269,5 +287,6 @@ nnoremap <silent> g] <cmd>NextDiagnosticCycle<cr>
 set signcolumn=yes
 
 " Add type hints
-autocmd CursorMoved,InsertLeave,BufEnter,BufWinEnter,TabEnter,BufWritePost *
+nnoremap <Leader>T :lua require'lsp_extensions'.inlay_hints()
+autocmd BufEnter,BufWinEnter,BufWritePost,InsertLeave,TabEnter
 \ lua require'lsp_extensions'.inlay_hints{ prefix = '', highlight = "Comment" }
